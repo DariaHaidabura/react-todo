@@ -87,7 +87,7 @@
      
 // printElements([1, 2, 3, 4, 5, 6, 7]);
 
-var first = [1,2,3,4]
+// var first = [1,2,3,4]
 // var second = [3,4,5,6]
 // function result(a, b) {
 //   var third = [];
@@ -100,7 +100,6 @@ var first = [1,2,3,4]
 //   return third;
 // }
 // console.log(result(first, second)); // => [3,4]
-
 
 
 
