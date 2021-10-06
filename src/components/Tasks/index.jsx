@@ -2,18 +2,20 @@ import React from 'react'
 import editSvg from '../../assets/img/edit.svg'
 import './Tasks.scss'
 
-const Tasks = () => {
+const Tasks = ({ list }) => {
   return (
     <div className="tasks">
-        <h2 className="tasks__title">Фронтенд
+        <h2 className="tasks__title">
+          {list.name}
         <img src={editSvg} alt="edit icon" />
         </h2>
         
         <div className="tasks__items">
-        <div className="tasks__items-row">
+          {list.tasks && list.tasks.map(task => (
+            <div key={task.id} className="tasks__items-row">
           <div className="checkbox">
-            <input id="check" type="checkbox" />
-            <label htmlFor="check">
+            <input id={`task-${task.id}`} type="checkbox" />
+            <label htmlFor={`task-${task.id}`}>
             <svg
               width="11"
               height="8"
@@ -30,8 +32,9 @@ const Tasks = () => {
                </svg>
               </label>
           </div>
-          <input value="React Hooks" />
+          <input readOnly value={task.text} />
         </div>
+          ))}
       </div> 
     </div>
   )
