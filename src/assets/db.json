@@ -29,21 +29,6 @@
       "name": "Спорт",
       "colorId": 3,
       "id": 6
-    },
-    {
-      "name": "Курс по ReactJS ToDo",
-      "colorId": 7,
-      "id": 7
-    },
-    {
-      "name": "pppp",
-      "colorId": 4,
-      "id": 8
-    },
-    {
-      "name": "ololo",
-      "colorId": 8,
-      "id": 9
     }
   ],
   "tasks": [
@@ -82,24 +67,6 @@
       "text": "test",
       "completed": false,
       "id": 6
-    },
-    {
-      "listId": 7,
-      "text": "Сделали сайдбар",
-      "completed": true,
-      "id": 7
-    },
-    {
-      "listId": 7,
-      "text": "Сделали список задач",
-      "completed": true,
-      "id": 8
-    },
-    {
-      "listId": 7,
-      "text": "Сделали удаление и редактирование задач и списков",
-      "completed": true,
-      "id": 9
     },
     {
       "listId": 2,

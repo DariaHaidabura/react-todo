@@ -1,63 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-import editSvg from '../../assets/img/edit.svg'
-import './Tasks.scss'
+import addSvg from '../../assets/img/add.svg';
 
-import AddTaskForm from './AddTaskForm';
+const AddTaskForm = ({ list, onAddTask }) => {
+  const [visibleForm, setFormVisible] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState('');
 
-const Tasks = ({ list, onEditTitle, onAddTask }) => {
-    const editTitle = () => {
-      const newTitle = window.prompt('Название списка', list.name);
-      if (newTitle) {
-        onEditTitle(list.id, newTitle);
-        axios
-          .patch('http://localhost:3001/lists/' + list.id, {
-            name: newTitle
-          })
-          .catch(() => {
-            alert('Не удалось обновить название списка');
-          });
-      }
+  const toggleFormVisible = () => {
+    setFormVisible(!visibleForm);
+    setInputValue('');
+  };
+
+  const addTask = () => {
+    const obj = {
+      listId: list.id,
+      text: inputValue,
+      completed: false
     };
+    setIsLoading(true);
+    axios
+      .post('http://localhost:3001/tasks', obj)
+      .then(({ data }) => {
+        onAddTask(list.id, data);
+        toggleFormVisible();
+      })
+      .catch(e => {
+        alert('Ошибка при добавлении задачи!');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   return (
-    <div className="tasks">
-        <h2 className="tasks__title">
-          {list.name}
-        <img onClick={editTitle} src={editSvg} alt="edit icon" />
-        </h2>
-        
-        <div className="tasks__items">
-          {!list.tasks.length && <h2>Задачи отсуствуют</h2>}
-          {list.tasks && list.tasks.map(task => (
-            <div key={task.id} className="tasks__items-row">
-          <div className="checkbox">
-            <input id={`task-${task.id}`} type="checkbox" />
-            <label htmlFor={`task-${task.id}`}>
-            <svg
-              width="11"
-              height="8"
-              viewBox="0 0 11 8"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M9.29999 1.20001L3.79999 6.70001L1.29999 4.20001"
-               stroke="#000"
-               strokeWidth="1.5"
-               strokeLinecap="round"
-               strokeLinejoin="round"
-                />
-               </svg>
-              </label>
-          </div>
-          <input readOnly value={task.text} />
+    <div className="tasks__form">
+      {!visibleForm ? (
+        <div onClick={toggleFormVisible} className="tasks__form-new">
+          <img src={addSvg} alt="Add icon" />
+          <span>Новая задача</span>
         </div>
-          ))}
-          <AddTaskForm list={list} onAddTask={onAddTask}/>
-      </div> 
+      ) : (
+        <div className="tasks__form-block">
+          <input
+            value={inputValue}
+            className="field"
+            type="text"
+            placeholder="Текст задачи"
+            onChange={e => setInputValue(e.target.value)}
+          />
+          <button disabled={isLoading} onClick={addTask} className="button">
+            {isLoading ? 'Добавление...' : 'Добавить задачу'}
+          </button>
+          <button onClick={toggleFormVisible} className="button button--grey">
+            Отмена
+          </button>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Tasks;
+export default AddTaskForm;
